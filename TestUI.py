@@ -85,7 +85,7 @@ def myClick():
     print(temp,temp1,temp2,temp3)
 
     import show_data
-    os.system('show_data.py')
+    show_data.main()
     path = 'result.ini'
     section = get_section(path)
     print(section)

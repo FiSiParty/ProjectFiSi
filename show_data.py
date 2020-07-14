@@ -12,26 +12,27 @@ import os
 def main():
     path = 'config.ini'
     section = get_section(path) #Array
-    
     ad1 = get_setting(path, section[0], "register" )
+    ans = int(ad1)
+    a = connect(ans)
+    config = configparser.ConfigParser()
+    config['The result'] = {"Answer": a}
+    with open('result.ini','w') as configfile:
+        config.write(configfile)
+    print("a = ", a)
     
     #function = get_setting(path, section[0], "function" )
     #print(function)
     #datatype = get_setting(path, section[0], "data type" )
     #print(datatype)
     
-    a = connect(ad1)
 
-    config = configparser.ConfigParser()
-    config['The result'] = {"Answer": a}
-    with open('result.ini','w') as configfile:
-        config.write(configfile)
-    print("a = ", a)
+    
    
 def connect(ad1):
     client = ModbusSerialClient(
         method='rtu',
-        port='COM3',
+        port='COM4',
         baudrate=9600,
         timeout=3,
         parity='N',
@@ -48,7 +49,7 @@ def connect(ad1):
             r = result2.registers + result1.registers #[Uint32/2, Uint32/1]
         except AttributeError:
             connect(ad1)
-        print(r)
+       
         b=struct.pack('HH',r[0],r[1]) 
         ans=struct.unpack('f',b)[0]
         ans = '%.2f'%ans
