@@ -9,7 +9,6 @@ import time
 import configparser
 import os
 
-
 def main():
     path = 'config.ini'
     section = get_section(path) #Array
@@ -21,12 +20,18 @@ def main():
     #datatype = get_setting(path, section[0], "data type" )
     #print(datatype)
     
-    connect(ad1)
+    a = connect(ad1)
+
+    config = configparser.ConfigParser()
+    config['The result'] = {"Answer": a}
+    with open('result.ini','w') as configfile:
+        config.write(configfile)
+    print("a = ", a)
    
 def connect(ad1):
     client = ModbusSerialClient(
         method='rtu',
-        port='COM4',
+        port='COM3',
         baudrate=9600,
         timeout=3,
         parity='N',
