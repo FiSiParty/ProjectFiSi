@@ -44,6 +44,21 @@ e2.place(x=340, y=230)
 e3 = Entry(root, width=21)
 e3.place(x=340, y=270)
 
+def checkError():
+    a=0
+    string = e.get()
+    
+    if(string.isnumeric()==False):
+            messagebox.showinfo("Message", "The register should be number!!")
+            a+=1
+    else:
+        b = int(e.get())
+        if(b>225 or b<0):
+            messagebox.showinfo("Message", "Register number should be 0-225!!")
+            a+=1
+    return a
+
+
 def NewWindow():
     newWindow = Toplevel(root)
 
@@ -58,40 +73,44 @@ def NewWindow():
     e.place(x=72, y=50)
 
 def myClick():
-    config = configparser.ConfigParser()
-    temp = e.get()
-    temp1 = e1.get()
-    if(e1.get()== "Input status (1xxxx)"):
-        temp1 = 1
-    elif(e1.get()=="Holding register (4xxxx)"):
-        temp1 = 4
-    elif(e1.get()=="Coil status (0xxxx)"):
-        temp1 = 0
-    else:
-        temp1 = 3
+    a=checkError()
+    if(a<1):
+        config = configparser.ConfigParser()
+        temp = e.get()
+        temp1 = e1.get()
+        if(e1.get()== "Input status (1xxxx)"):
+            temp1 = 1
+        elif(e1.get()=="Holding register (4xxxx)"):
+            temp1 = 4
+        elif(e1.get()=="Coil status (0xxxx)"):
+            temp1 = 0
+        else:
+            temp1 = 3
+            
+        temp2 = e2.get()
+        if(e2.get()=="Float"):
+            temp2 = 1
+        else:
+            temp2 = 2
         
-    temp2 = e2.get()
-    if(e2.get()=="Float"):
-        temp2 = 1
-    else:
-        temp2 = 2
-    
-    temp3 = e3.get()
-    config['Register NO...'] = {"Register": temp, "Function": temp1,
-                           "Data Type": temp2, "Time": temp3}
-    with open('config.ini','w') as configfile:
-        config.write(configfile)
-    messagebox.showinfo("Message", "Add register successful!!")
-    print(temp,temp1,temp2,temp3)
+        temp3 = e3.get()
+        config['Register NO...'] = {"Register": temp, "Function": temp1,
+                               "Data Type": temp2, "Time": temp3}
+        with open('config.ini','w') as configfile:
+            config.write(configfile)
+        messagebox.showinfo("Message", "Add register successful!!")
+        print(temp,temp1,temp2,temp3)
 
-    import show_data
-    show_data.main()
-    path = 'result.ini'
-    section = get_section(path)
-    print(section)
-    a = get_setting(path, section[0],"Answer")
-    messagebox.showinfo(title='inputs for S3', message="Report Result!" '\n' 'The result from register %s \n = %s' %(temp, a))
-    
+        import show_data
+        show_data.main()
+        path = 'result.ini'
+        section = get_section(path)
+        print(section)
+        a = get_setting(path, section[0],"Answer")
+        messagebox.showinfo(title='inputs for S3', message="Report Result!" '\n' 'The result from register %s \n = %s' %(temp, a))
+    else:
+        messagebox.showinfo("Message", "Please try again")
+        
     
 def exit1():
     exit()
