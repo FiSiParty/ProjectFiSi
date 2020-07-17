@@ -118,10 +118,10 @@ def myClick():
         
 
 def show_data():
-    import show_data
-    show_data.main()
+    import show_data_2
+    show_data_2.main()
     path = 'Get_data.ini'
-    path1 = 'config.ini'
+    
     section = get_section(path)
     #print(section)
     #a = get_setting(path, section[0],"Answer")
@@ -135,10 +135,10 @@ def show_data():
 
    
 
-##def new_P():
-##    os.remove("config.ini")
-##    os.remove("Get_data.ini")
-    
+def new_P():
+    os.remove("config.ini")
+    os.remove("Get_data.ini")
+    messagebox.showinfo(title='Message', message="Remove")
         
 def exit1():
     root.destroy()
@@ -177,7 +177,7 @@ b3.place(x=260,y=250)
 ##             text ="Show",width=12,bg='brown',fg='white',  
 ##             command = NewWindow)
 ##btn.place(x=270,y=450)
-##b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
-##b3.place(x=260,y=300)
+b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
+b3.place(x=260,y=300)
 
 root.mainloop()

@@ -62,7 +62,7 @@ def getValue():
 def connect(ad1):
     client = ModbusSerialClient(
         method='rtu',
-        port='COM3',
+        port='COM4',
         baudrate=9600,
         timeout=3,
         parity='N',
