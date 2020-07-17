@@ -8,7 +8,7 @@ from tkinter import messagebox
 root = Tk()
 root.title("SDM20 Program")
 
-root.geometry('640x400')
+root.geometry('840x400')
 root.resizable(width=False, height=False)
 
 label0= Label(root, text="ID Slave", width=20, font=("arial",10,"bold"))
@@ -127,13 +127,45 @@ def show_data():
     #a = get_setting(path, section[0],"Answer")
     #messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' 'The result from register %s \n = %s' %(b[0],b[1], a))
     conta = len(section)
+    listans= []
     i=0
     while i < conta:
         a = get_setting(path, section[i],"Answer")
-        messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' ' = %s' %(section[i], a))
+##        messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' ' = %s' %(section[i], a))
+        listans.append(a)
+        print(listans)
+        if(i+1==conta):
+            print(listans)
+            #ReadAllIndex()
+            show_message(listans)
         i+=1
 
-   
+def show_message(listans):
+    boot = Tk()
+    boot.title("Show list of register")
+
+    boot.geometry('300x250')
+    boot.resizable(width=False, height=False)
+
+    listbox = Listbox(boot)
+    listbox.pack()
+
+    count = len(listans)
+    
+        
+    for i in range(count):
+        listbox.insert(END, listans[i])
+
+    boot.mainloop()
+
+def ReadAllIndex():
+    parser = configparser.ConfigParser()
+    parser.read('config.ini')
+    for sect in parser.sections():
+       print(sect)
+       for k,v in parser.items(sect):
+          print(' {} = {}'.format(k,v))
+       print()  
 
 def new_P():
     os.remove("config.ini")
@@ -141,7 +173,9 @@ def new_P():
     messagebox.showinfo(title='Message', message="Remove")
         
 def exit1():
-    root.destroy()
+    answer = messagebox.askyesno("exit","Do you really want to exit")
+    if(answer):
+        root.destroy()
 
 def get_config(path):
     config = configparser.ConfigParser()
@@ -167,17 +201,19 @@ def get_section(path):
 b1= Button(root, text="Add", width=12,bg='brown',fg='white',command=myClick)
 b1.place(x=220,y=195)
 
-b2=Button(root, text="Quit",width=12,bg='brown',fg='white',command=exit1)
+b11= Button(root, text="Exit", width=12,bg='brown',fg='white',command=exit1)
+b11.place(x=260,y=300)
+
+b2=Button(root, text="Scan",width=12,bg='brown',fg='white',command=show_data)
 b2.place(x=320,y=195)
 
-b3= Button(root, text="Scan", width=12,bg='brown',fg='white',command=show_data)
-b3.place(x=260,y=250)
+b4= Button(root, text="Show", width=12,bg='brown',fg='white',command=new_P)
+b4.place(x=220,y=250)
 
-##btn = Button(root,  
-##             text ="Show",width=12,bg='brown',fg='white',  
-##             command = NewWindow)
-##btn.place(x=270,y=450)
 b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
-b3.place(x=260,y=300)
+b3.place(x=320,y=250)
+
+listbox = Listbox(root, width=50, heigh=20)
+listbox.place(x=500,y=53)
 
 root.mainloop()
