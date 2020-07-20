@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 
 root = Tk()
-root.title("SDM20 Program")
+root.title("SDM20 Program") 
 
 root.geometry('840x400')
 root.resizable(width=False, height=False)
@@ -56,19 +56,28 @@ e1.place(x=340, y=110)
 def checkError():
     a=0
     string = e.get()
+    string1 = e1.get()
     
     if(string.isnumeric()==False):
-            messagebox.showinfo("Message", "The register should be number!!")
-            a+=1
+        messagebox.showinfo("Message", "The register should be number!!")
+        a+=1
+    if(string1.isnumeric()==False):
+        messagebox.showinfo("Message", "The Slave ID should be number!!")
+        a+=1
+
     else:
         b = int(e.get())
+        b1 = int(e1.get())
         if(b>225 or b<0):
             messagebox.showinfo("Message", "Register number should be 0-225!!")
+            a+=1
+        if(b1<0):
+            messagebox.showinfo("Message","Slave ID must > 0")
             a+=1
     return a
 
 
-def myClick():
+def Adding():
     a=checkError()
     if(a<1):
         config = configparser.ConfigParser()
@@ -91,11 +100,18 @@ def myClick():
 ##
         item = str(e1.get())
         ID = "ID"+item
+        
 ##        temp3 = e3.get()
         a1 = [ID,temp]
         print(a1)
 
-         
+        coulis = listbox1.size()
+        listbox1.insert(coulis, "Data added!")
+        listbox1.insert(coulis+1, a1[0]) #add id to list1
+        print("add id: ",coulis)
+        listbox1.insert(coulis+2, a1[1]) #add register
+        listbox1.insert(coulis+3, "")
+        
         if(os.path.isfile('config.ini')==False):
             
             config[a1[0]] = {"Register": a1[1]}
@@ -143,20 +159,21 @@ def show_data():
 def show_message(listans):
     boot = Tk()
     boot.title("Show list of register")
-
+    
     boot.geometry('300x250')
     boot.resizable(width=False, height=False)
 
-    listbox = Listbox(boot)
-    listbox.pack()
+    listbox0 = Listbox(boot)
+    listbox0.pack()
 
     count = len(listans)
     
         
     for i in range(count):
-        listbox.insert(END, listans[i])
+        listbox0.insert(END, listans[i])
 
     boot.mainloop()
+
 
 def ReadAllIndex():
     parser = configparser.ConfigParser()
@@ -170,7 +187,12 @@ def ReadAllIndex():
 def new_P():
     os.remove("config.ini")
     os.remove("Get_data.ini")
-    messagebox.showinfo(title='Message', message="Remove")
+    a = listbox1.size()
+    i = 0
+    while(a>=0):
+        listbox1.delete(a)
+        a-=1
+    messagebox.showinfo(title='Message', message="All data removed")
         
 def exit1():
     answer = messagebox.askyesno("exit","Do you really want to exit")
@@ -198,22 +220,23 @@ def get_section(path):
 
 
 ##myButton = Button(root, text="Click Me", command=myClick)
-b1= Button(root, text="Add", width=12,bg='brown',fg='white',command=myClick)
+b1= Button(root, text="Add", width=12,bg='brown',fg='white',command=Adding)
 b1.place(x=220,y=195)
 
 b11= Button(root, text="Exit", width=12,bg='brown',fg='white',command=exit1)
-b11.place(x=260,y=300)
+b11.place(x=320,y=250)
 
 b2=Button(root, text="Scan",width=12,bg='brown',fg='white',command=show_data)
 b2.place(x=320,y=195)
 
-b4= Button(root, text="Show", width=12,bg='brown',fg='white',command=new_P)
-b4.place(x=220,y=250)
+##b4= Button(root, text="Show", width=12,bg='brown',fg='white',command=Insert_L)
+##b4.place(x=220,y=250)
 
 b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
-b3.place(x=320,y=250)
+b3.place(x=220,y=250)
 
-listbox = Listbox(root, width=50, heigh=20)
-listbox.place(x=500,y=53)
+listbox1 = Listbox(root, width=50, heigh=20)
+listbox1.place(x=500,y=53)
+
 
 root.mainloop()
