@@ -147,7 +147,6 @@ def show_data():
     #messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' 'The result from register %s \n = %s' %(b[0],b[1], a))
     conta = len(section)
     listans= []
-    a = 0
     i=0
     while i < conta:
         a = get_setting(path, section[i],"Answer")
@@ -159,8 +158,6 @@ def show_data():
             #ReadAllIndex()
             show_message(listans)
         i+=1
-        a+=1
-    return a
 
 def show_message(listans):
     boot = Tk()
