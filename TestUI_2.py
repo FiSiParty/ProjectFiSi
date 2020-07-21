@@ -19,7 +19,10 @@ label1.place(x=165,y=53)
 
 label2= Label(root,text="Register Address",width=20,font=("arial",10,"bold"))
 label2.place(x=140,y=150)
-##
+
+label2= Label(root,text="ID slave & Register address",width=30,font=("arial",10,"bold"))
+label2.place(x=470,y=53)
+
 ##label2= Label(root,text="Data type",width=20,font=("arial",10,"bold"))
 ##label2.place(x=140,y=190)
 ##
@@ -100,9 +103,9 @@ def Adding():
 ##
         item = str(e1.get())
         ID = "ID"+item
-        
+        t=0
 ##        temp3 = e3.get()
-        a1 = [ID,temp]
+        a1 = [ID,temp,t]
         print(a1)
 
         coulis = listbox1.size()
@@ -144,6 +147,7 @@ def show_data():
     #messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' 'The result from register %s \n = %s' %(b[0],b[1], a))
     conta = len(section)
     listans= []
+    a = 0
     i=0
     while i < conta:
         a = get_setting(path, section[i],"Answer")
@@ -155,6 +159,8 @@ def show_data():
             #ReadAllIndex()
             show_message(listans)
         i+=1
+        a+=1
+    return a
 
 def show_message(listans):
     boot = Tk()
@@ -185,17 +191,24 @@ def ReadAllIndex():
        print()  
 
 def new_P():
-    os.remove("config.ini")
-    os.remove("Get_data.ini")
     a = listbox1.size()
     i = 0
-    while(a>=0):
-        listbox1.delete(a)
-        a-=1
-    messagebox.showinfo(title='Message', message="All data removed")
-        
+    if(os.path.isfile('config.ini')==True): #delete all data
+        os.remove("config.ini")
+        if(os.path.isfile('Get_data.ini')==True):
+            os.remove("Get_data.ini")
+        while(a>=0):
+            listbox1.delete(a)
+            a-=1
+        messagebox.showinfo(title='Message', message="All data removed")
+    else:
+        messagebox.showinfo(title='Message', message='No adding')        
 def exit1():
     answer = messagebox.askyesno("exit","Do you really want to exit")
+    if(os.path.isfile('config.ini')==True): # Delete all data before exit
+        os.remove("config.ini")
+        if(os.path.isfile('Get_data.ini')==True):
+            os.remove("Get_data.ini")
     if(answer):
         root.destroy()
 
@@ -235,8 +248,8 @@ b2.place(x=320,y=195)
 b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
 b3.place(x=220,y=250)
 
-listbox1 = Listbox(root, width=50, heigh=20)
-listbox1.place(x=500,y=53)
+listbox1 = Listbox(root, width=50, heigh=15)
+listbox1.place(x=500,y=80)
 
 
 root.mainloop()
