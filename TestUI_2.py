@@ -3,7 +3,7 @@ import configparser
 import os
 from tkinter.ttk import Combobox
 from tkinter import messagebox
-
+import input_port
 
 root = Tk()
 root.title("SDM20 Program") 

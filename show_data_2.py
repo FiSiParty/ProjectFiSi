@@ -37,9 +37,10 @@ def getValue():
     couta = len(section)
     i =0
     while i<couta:
+        comport = input_add()
         ad1 = get_setting(path, section[i], "register")
         ans = int(ad1)
-        a = connect(ans)
+        a = connect(ans,comport)
 
         
 
@@ -58,18 +59,25 @@ def getValue():
             with open('Get_data.ini','w') as configfile:
                 config.write(configfile)
         i+=1
-    
-def connect(ad1):
+
+
+def input_add():
+    path = 'connection.ini'
+    config = configparser.ConfigParser()
+    section = get_section(path)
+    comport = get_setting(path, section[0], "numberport")
+    return comport
+
+def connect(ad1,comport):
     client = ModbusSerialClient(
         method='rtu',
-        port='COM3',
+        port= comport,
         baudrate=9600,
         timeout=3,
         parity='N',
         stopbits=1,
         bytesize=8
     )
-      
     if client.connect():
         #ad1=int(input("address1: ")) # Address input normal
         register = int(ad1)
@@ -111,6 +119,7 @@ def get_section(path):
     config = get_config(path)
     sect = config.sections()
     return sect
+
 
 main()
     
