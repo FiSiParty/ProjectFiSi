@@ -4,6 +4,7 @@ import os
 from tkinter.ttk import Combobox
 from tkinter import messagebox
 import input_port
+import time
 
 root = Tk()
 root.title("SDM20 Program") 
@@ -159,7 +160,30 @@ def show_data():
             show_message(listans)
         i+=1
 
+def show_data_1():
+    import show_data_2
+    show_data_2.main()
+    path = 'Get_data.ini'
+    
+    section = get_section(path)
+    #print(section)
+    #a = get_setting(path, section[0],"Answer")
+    #messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' 'The result from register %s \n = %s' %(b[0],b[1], a))
+    conta = len(section)
+    listans= []
+    i=0
+    while i < conta:
+        a = get_setting(path, section[i],"Answer")
+##        messagebox.showinfo(title='Register data', message="Report Result!" '\n' 'Id slave: %s' '\n' ' = %s' %(section[i], a))
+        listans.append(a)
+        print(listans)
+        i+=1
+    return listans
+#####################################################################3
 def show_message(listans):
+    import show_data_2
+    path = 'config.ini'
+    section = get_section(path)
     boot = Tk()
     boot.title("Show list of register")
     
@@ -169,15 +193,29 @@ def show_message(listans):
     listbox0 = Listbox(boot)
     listbox0.pack()
 
+
     count = len(listans)
     
-        
-    for i in range(count):
-        listbox0.insert(END, listans[i])
+    while True:
+        a = listbox0.size()
+        while(a>=0):
+            listbox0.delete(a)
+            a-=1
+        for i in range(count):
+            re = get_setting(path, section[i],"register")
+            listbox0.insert(END, "Register"+" "+re+": "+listans[i])
 
+        show_data_2.main()
+        listans = show_data_1()
+        time.sleep(2)  
+        boot.update()
     boot.mainloop()
 
-
+#################################################################################
+def Edit_port():
+    import input_port_back
+    
+    
 def ReadAllIndex():
     parser = configparser.ConfigParser()
     parser.read('config.ini')
@@ -201,7 +239,7 @@ def new_P():
     else:
         messagebox.showinfo(title='Message', message='No adding')        
 def exit1():
-    answer = messagebox.askyesno("exit","Do you really want to exit")
+    answer = messagebox.askyesno("exit","Do you really want to exit?")
     if(os.path.isfile('config.ini')==True): # Delete all data before exit
         os.remove("config.ini")
         if(os.path.isfile('Get_data.ini')==True):
@@ -248,5 +286,7 @@ b3.place(x=220,y=250)
 listbox1 = Listbox(root, width=50, heigh=15)
 listbox1.place(x=500,y=80)
 
+b4= Button(root, text="Edit port", width=12,bg='brown',fg='white',command=Edit_port)
+b4.place(x=70,y=250)
 
 root.mainloop()
