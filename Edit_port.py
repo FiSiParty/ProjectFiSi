@@ -71,11 +71,13 @@ def check_write():
         
 def disable_event():
     pass      
-    
 
-b4= Button(poot, text="Submit", width=12,bg='brown',fg='white',command=check_write)
+def Exit():
+    poot.destroy()
+
+b4= Button(poot, text="Submit", width=12,bg='brown',fg='white',command=check_write).place(x=90,y=100)
     
-b4.place(x=220,y=100)
+b5 = Button(poot, text="Cancle", width=12,bg='brown',fg='white',command=Exit).place(x=290,y=100)
 
 poot.protocol("WM_DELETE_WINDOW", disable_event)
     

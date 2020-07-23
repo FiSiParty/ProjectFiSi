@@ -6,6 +6,9 @@ from tkinter import messagebox
 import input_port
 import time
 
+def call_port():
+    os.system('Edit_port.py')
+
 root = Tk()
 root.title("SDM20 Program") 
 
@@ -254,7 +257,6 @@ def get_config(path):
 
 
 def get_setting(path, section, sett):
-   
     config = get_config(path)
     value = config.get(section, sett)
     msg = "{section} {sett} = {value}".format(
@@ -283,10 +285,16 @@ b2.place(x=320,y=195)
 b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
 b3.place(x=220,y=250)
 
+b3= Button(root, text="Edit Port", width=12,bg='brown',fg='white',command=call_port)
+b3.place(x=70,y=250)
+
+
+
 listbox1 = Listbox(root, width=50, heigh=15)
 listbox1.place(x=500,y=80)
 
 b4= Button(root, text="Edit port", width=12,bg='brown',fg='white',command=Edit_port)
 b4.place(x=70,y=250)
+
 
 root.mainloop()
