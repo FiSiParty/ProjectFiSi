@@ -8,6 +8,7 @@ import paho.mqtt.client as mqtt
 import time
 import configparser
 import os
+from tkinter import messagebox
 
 def main():
     getValue()
@@ -78,27 +79,49 @@ def connect(ad1,comport):
         stopbits=1,
         bytesize=8
     )
+     
     if client.connect():
         #ad1=int(input("address1: ")) # Address input normal
         register = int(ad1)
+        
         try:
             result1 = client.read_input_registers(address=register-1,count=1,unit=1)  #Uint32/1
             result2 = client.read_input_registers(address=register,count=1,unit=1)   #Uint32/2
             r = result2.registers + result1.registers #[Uint32/2, Uint32/1]
         except AttributeError:
-            connect(ad1)
-       
-        b=struct.pack('HH',r[0],r[1]) 
-        ans=struct.unpack('f',b)[0]
-        ans = '%.2f'%ans
-
-        allans = ans
-        print('Ans: ',allans)
-        client.close()
-        return allans
+            connect(ad1,comport)
+        try:
     
+            try:
+                b=struct.pack('HH',r[0],r[1]) 
+                ans=struct.unpack('f',b)[0]
+                ans = '%.2f'%ans
+                allans = ans
+                print('Ans: ',allans)
+                client.close()
+                return allans
+            except UnboundLocalError:
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!UnboundLocalError!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                connect(ad1,comport)
+        except :
+            messagebox.askretrycancel("Message", "Cannot connect to the Modbus Server/Slave")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!Cannot connect to the Modbus Server/Slave!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            connect(ad1,comport)
+            raise
+        
     else:
+        
+        
         print('Cannot connect to the Modbus Server/Slave')
+        tryy = messagebox.askretrycancel("Message", "Please Check USB Cable or USB port")
+        if(tryy):
+            connect(ad1,comport)
+
+##    except:
+##        messagebox.askretrycancel("Message", "Cannot connect to the Modbus Server/Slave")
+##        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!Cannot connect to the Modbus Server/Slave!!!!!!!!!!!!!!!!!!!!!!!!!!")
+##        connect(ad1,comport)
+##        raise
         
 
 def get_config(path):

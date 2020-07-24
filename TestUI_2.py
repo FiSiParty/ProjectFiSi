@@ -3,8 +3,11 @@ import configparser
 import os
 from tkinter.ttk import Combobox
 from tkinter import messagebox
-import input_port
+
 import time
+
+def call_port():
+    os.system('Edit_port.py')
 
 root = Tk()
 root.title("SDM20 Program") 
@@ -179,8 +182,8 @@ def show_data_1():
         print(listans)
         i+=1
     return listans
-#####################################################################3
-def show_message(listans):
+
+def show_message(listans): # Window show the result
     import show_data_2
     path = 'config.ini'
     section = get_section(path)
@@ -190,9 +193,15 @@ def show_message(listans):
     boot.geometry('300x250')
     boot.resizable(width=False, height=False)
 
+    labelg= Label(boot,text="Result from SDM120",width=20,font=("arial",10,"bold"))
+    labelg.pack()
+    
     listbox0 = Listbox(boot)
     listbox0.pack()
 
+    bo= Button(boot, text="Stop", width=12,bg='brown',fg='white',command=boot.destroy)
+    bo.pack()
+    
 
     count = len(listans)
     
@@ -211,11 +220,7 @@ def show_message(listans):
         boot.update()
     boot.mainloop()
 
-#################################################################################
-def Edit_port():
-    import input_port_back
-    
-    
+
 def ReadAllIndex():
     parser = configparser.ConfigParser()
     parser.read('config.ini')
@@ -239,13 +244,14 @@ def new_P():
     else:
         messagebox.showinfo(title='Message', message='No adding')        
 def exit1():
-    answer = messagebox.askyesno("exit","Do you really want to exit?")
+    answer = messagebox.askyesno("exit","Do you really want to exit")
     if(os.path.isfile('config.ini')==True): # Delete all data before exit
         os.remove("config.ini")
         if(os.path.isfile('Get_data.ini')==True):
             os.remove("Get_data.ini")
     if(answer):
         root.destroy()
+        
 
 def get_config(path):
     config = configparser.ConfigParser()
@@ -254,7 +260,6 @@ def get_config(path):
 
 
 def get_setting(path, section, sett):
-   
     config = get_config(path)
     value = config.get(section, sett)
     msg = "{section} {sett} = {value}".format(
@@ -266,27 +271,34 @@ def get_section(path):
     sect = config.sections()
     return sect
 
+def disable_event():
+    pass   #remove X
+
 
 ##myButton = Button(root, text="Click Me", command=myClick)
 b1= Button(root, text="Add", width=12,bg='brown',fg='white',command=Adding)
-b1.place(x=220,y=195)
+b1.place(x=190,y=195)
 
 b11= Button(root, text="Exit", width=12,bg='brown',fg='white',command=exit1)
-b11.place(x=320,y=250)
+b11.place(x=710,y=350)
 
 b2=Button(root, text="Scan",width=12,bg='brown',fg='white',command=show_data)
-b2.place(x=320,y=195)
+b2.place(x=350,y=195)
 
 ##b4= Button(root, text="Show", width=12,bg='brown',fg='white',command=Insert_L)
 ##b4.place(x=220,y=250)
 
 b3= Button(root, text="Reset", width=12,bg='brown',fg='white',command=new_P)
-b3.place(x=220,y=250)
+b3.place(x=190,y=250)
+
+b3= Button(root, text="Edit Port", width=12,bg='brown',fg='white',command=call_port)
+b3.place(x=350,y=250)
+
+ 
 
 listbox1 = Listbox(root, width=50, heigh=15)
 listbox1.place(x=500,y=80)
 
-b4= Button(root, text="Edit port", width=12,bg='brown',fg='white',command=Edit_port)
-b4.place(x=70,y=250)
+root.protocol("WM_DELETE_WINDOW", disable_event)
 
 root.mainloop()
