@@ -11,6 +11,7 @@ import configparser
 import os
 from tkinter import messagebox
 
+########## write data connection to config
 def main():
     getValue()
 ##    path = 'config.ini'
