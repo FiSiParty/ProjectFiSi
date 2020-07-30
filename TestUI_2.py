@@ -18,7 +18,7 @@ root.resizable(width=False, height=False)
 label0= Label(root, text="ID Slave", width=20, font=("arial",10,"bold"))
 label0.place(x=140,y=110)
 
-label1= Label(root, text="SDM20", relief="solid", width=20, font=("arial",19,"bold"))
+label1= Label(root, text="SDM120", relief="solid", width=20, font=("arial",19,"bold"))
 label1.place(x=165,y=53)
 
 label2= Label(root,text="Register Address",width=20,font=("arial",10,"bold"))
